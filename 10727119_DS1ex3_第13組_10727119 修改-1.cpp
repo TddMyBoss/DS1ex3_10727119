@@ -8,8 +8,8 @@ enum { BRACKETS1 = -1, BRACKETS2 = -2,  SPACE = 0, NUMBER = 1 , SYMBOL = 2 ,ERRO
 
 struct Character {
 	char word ;
-	int number ; // ¼Æ¦r 
-	int type ;   // «¬§O 
+	int number ; // æ•¸å­— 
+	int type ;   // åž‹åˆ¥ 
 };
 
 
@@ -44,11 +44,14 @@ bool Sort::Check_Is_Infix() {
 			return false;
 		}
 	}
-	int CheckBrackets = 0;
-	for ( int i = 0; i < Size ; i++ ) {          // ¬O§_¦³¤W¤U¬A¸¹ 
-		if (character[i].type == BRACKETS1)
+	int CheckBrackets = 0 ;
+	int x ; // åˆ¤æ–·ä¸Šæ‹¬è™Ÿæ˜¯å¦åœ¨ä¸‹æ‹¬è™Ÿå‰ 
+	for ( int i = 0; i < Size ; i++ ) {          // æ˜¯å¦æœ‰ä¸Šä¸‹æ‹¬è™Ÿ 
+		if (character[i].type == BRACKETS1) { 
+		    x = i ; 
 			CheckBrackets++;
-		else if (character[i].type == BRACKETS2)
+		} 
+		else if (character[i].type == BRACKETS2 && i > x )
 			CheckBrackets--;
 	}
 	
@@ -57,16 +60,21 @@ bool Sort::Check_Is_Infix() {
 		return false;
 	}
 	
-	bool Continue = true;
-	for ( int i = 0 , j = 1; i<Size && Continue ; i++) {
-		if ( ( character[i].type == NUMBER) ) // j % NUMBER == 0 
-			j++;
-			for ( i=i; i<Size && character[i].type == NUMBER ; i++ ) ;
+	bool Continue = true ;
+	for ( int i = 0 ; i<Size && Continue ; i++) {
+		if ( ( character[i].type == NUMBER) ) {
 			
-		if ( ( character[i].type == SYMBOL) ) // j % SYMBOL == 2 
-			j++;
-		else if ( character[i].type <=0 && character[i].type >= -2 );
-		else if ( ( character[i].type == NUMBER ) );
+			for ( i=i; i<Size && character[i].type == NUMBER ; i++ ) {
+			}
+	    }
+		if ( character[i].type == SYMBOL ) {
+			if ( character[i+1].type != NUMBER || character[i+1].type != SPACE )
+			  Continue = false;
+	    }
+		else if ( character[i].type <=0 && character[i].type >= -2 ) {
+		}
+		else if ( character[i].type == NUMBER ) {
+		}
 		else
 			Continue = false;
 	}
@@ -101,7 +109,7 @@ Sort::Sort( string computation ) {
 				for ( int u = j, k = 0 ; k < i-u ; k++,j++) {
 					character[j].number = character[u].number;
 				}
-				*/ 
+				*/
 				
 		} 
 		else if( computation.at(i) == '(' || computation.at(i) == ')' ) {
@@ -112,16 +120,16 @@ Sort::Sort( string computation ) {
 					character[i].type = BRACKETS2;
 		} 
 		else if( computation.at(i) == '+' || computation.at(i) == '-' || computation.at(i) == '*' || computation.at(i) == '/' ) {
-				character[i].word = computation.at(i);
-				character[i].type = SYMBOL;
+				character[i].word = computation.at(i) ;
+				character[i].type = SYMBOL ;
 		} 
 		else if( computation.at(i) == ' ' ){
-			character[i].word = computation.at(i);
-			character[i].type = SPACE;
+			character[i].word = computation.at(i) ;
+			character[i].type = SPACE ;
 		} 
 		else {
-			character[i].word = computation.at(i);
-			character[i].type = ERROR;
+			character[i].word = computation.at(i) ;
+			character[i].type = ERROR ;
 		}
 		if( i+1 > Size)
 			break;
@@ -139,11 +147,11 @@ Character Sort::getCharacter(int position){
 bool Menu (int command) {
 	
 	string input ;
-    cout << "*** Path Finding ***" << endl;
-	cout << "0. Quit             " << endl;
-	cout << "1. Check it is Infix" << endl;
-	cout << "2. Infix to postfix " << endl;
-	cout << "********************" << endl;
+    cout << "*** Path Finding ***" << endl ;
+	cout << "0. Quit             " << endl ;
+	cout << "1. Check it is Infix" << endl ;
+	cout << "2. Infix to postfix " << endl ;
+	cout << "********************" << endl ;
 	cout << "Input a command (0, 1, 2) : " ;
 	cin >> command ;
 	Sort *sort ;
@@ -161,14 +169,14 @@ bool Menu (int command) {
 			cout << "Input: " << input << endl ;
 			
 			if(sort->Check_Is_Infix())
-				cout << "It is a legitimate infix expression.\n";
+				cout << "It is a legitimate infix expression.\n" ;
 			return true;
 			break;
 		case 2:
 			return true;
 			break;
 		default:
-			cout << "Error : Not correct instruction, Please Enter new one.\n";
+			cout << "Error : Not correct instruction, Please Enter new one.\n" ;
 			return true;
 			break;
 	}
