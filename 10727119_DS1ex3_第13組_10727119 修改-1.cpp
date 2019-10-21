@@ -17,8 +17,8 @@ struct Node {
 
 struct Character {
  char word ;
- int number ; // ?詨? 
- int type ;   // ? 
+ int number ; // 數字 
+ int type ;   // 型別 
 } ;
 
 class Sort {
@@ -74,18 +74,18 @@ bool Sort::Check_Is_Infix() {
  for ( int i = 0 ; i < Size && Continue ; i++ ) {
   if ( character[i].type == NUMBER ) {
    
-   for ( i=i; i < Size && character[i].type == NUMBER ; i++ ) {            // ?詨? 
+   for ( i=i; i < Size && character[i].type == NUMBER ; i++ ) {            // 數字
    }
    Number++ ;
      }
   if ( character[i].type == SYMBOL ) {
       Symbol++ ;
      }
-  else if ( character[i].type <= 0 && character[i].type >= -2 ) {          // ?亦?祈??征??
+  else if ( character[i].type <= 0 && character[i].type >= -2 ) {          // 上下括號and空格
   }
   else if ( character[i].type == NUMBER ) {
    
-   for ( i=i; i < Size && character[i].type == NUMBER ; i++ ) {            // ?詨? 
+   for ( i=i; i < Size && character[i].type == NUMBER ; i++ ) {            // 數字 
    }
    Number++ ;
   }
@@ -184,11 +184,11 @@ void Sort::MissionTwo() {
  char temp[Size] ={'\0'};
  Back();
  while(1) {
-  if( node->category == BRACKETS1 ) { // (
+  if( node->category == BRACKETS1 ) { // '('
    tempCurrentPosition++;
    temp[tempCurrentPosition] = '(';
   } // if
-  else if ( node->category == BRACKETS2 ) { // )
+  else if ( node->category == BRACKETS2 ) { // ')'
    while(temp[tempCurrentPosition] != '(') {
     Postfix->character = temp[tempCurrentPosition];
     Postfix->category = SYMBOL;
