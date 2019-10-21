@@ -10,8 +10,7 @@ struct Character {
 	char word ;
 	int number ; // 數字 
 	int type ;   // 型別 
-};
-
+} ;
 
 class Sort {
 	
@@ -19,8 +18,8 @@ class Sort {
 		Character *character;
 		int Size ;
 		
-	public: 
-		
+	public:
+
 		Sort( string computation ) ;
 		int getSize();
 		Character getCharacter(int position);
@@ -35,7 +34,7 @@ Sort::Sort() {
 	Size = 0;
 }
 */
- 
+
 bool Sort::Check_Is_Infix() {
 	
 	for ( int i = 0; i < Size ; i++ ) {
@@ -52,7 +51,7 @@ bool Sort::Check_Is_Infix() {
 			CheckBrackets++;
 		} 
 		else if (character[i].type == BRACKETS2 && i > x )
-			CheckBrackets--;
+			CheckBrackets-- ;
 	}
 	
 	if ( CheckBrackets != 0 ) {
@@ -61,23 +60,35 @@ bool Sort::Check_Is_Infix() {
 	}
 	
 	bool Continue = true ;
+	int Number = 0 ;
+	int Symbol = 0 ;
 	for ( int i = 0 ; i<Size && Continue ; i++) {
-		if ( ( character[i].type == NUMBER) ) {
+		if ( character[i].type == NUMBER ) {
 			
-			for ( i=i; i<Size && character[i].type == NUMBER ; i++ ) {
+			for ( i=i; i<Size && character[i].type == NUMBER ; i++ ) {            // 數字 
 			}
+			Number++ ;
 	    }
 		if ( character[i].type == SYMBOL ) {
-			if ( character[i+1].type != NUMBER || character[i+1].type != SPACE )
-			  Continue = false;
+		    Symbol++ ;
 	    }
-		else if ( character[i].type <=0 && character[i].type >= -2 ) {
+		else if ( character[i].type <=0 && character[i].type >= -2 ) {          // 若為括號、空格 
 		}
 		else if ( character[i].type == NUMBER ) {
+			
+			for ( i=i; i<Size && character[i].type == NUMBER ; i++ ) {            // 數字 
+			}
+			Number++ ;
 		}
 		else
-			Continue = false;
+			Continue = false ;
 	}
+	
+	if ( Symbol >= Number)
+	    Continue = false ;
+	else
+	    Continue = true ;
+
 	if ( !Continue ) {
 		cout << "Error 3: "<<"there is one extra opearator.\n";
 		return false;
@@ -88,9 +99,9 @@ bool Sort::Check_Is_Infix() {
 Sort::Sort( string computation ) {
 	Size = computation.size();
 	character = new Character[Size];
-	bool End = false;
+	bool End = false ;
 	for ( int i = 0,j = 0; i < Size && !End ; i++, j++ ) {
-		if ( computation.at(i) <= '9' && computation.at(i) >='0' ) {
+		if ( computation.at(i) <= '9' && computation.at(i) >= '0' ) {
 				character[j].type = NUMBER;			
 				character[j].number = 0;
 				for ( i = i ; computation.at(i) <= '9' && computation.at(i) >= '0' && i < Size  ; i++ ) {
@@ -107,7 +118,7 @@ Sort::Sort( string computation ) {
 					}
 				/*	
 				for ( int u = j, k = 0 ; k < i-u ; k++,j++) {
-					character[j].number = character[u].number;
+					character[j].number = character[u].number ;
 				}
 				*/
 				
@@ -123,7 +134,7 @@ Sort::Sort( string computation ) {
 				character[i].word = computation.at(i) ;
 				character[i].type = SYMBOL ;
 		} 
-		else if( computation.at(i) == ' ' ){
+		else if( computation.at(i) == ' ' ) {
 			character[i].word = computation.at(i) ;
 			character[i].type = SPACE ;
 		} 
@@ -144,8 +155,8 @@ Character Sort::getCharacter(int position){
 	return character[position];
 }
 
-bool Menu (int command) {
-	
+bool Menu ( int command ) {
+
 	string input ;
     cout << "*** Path Finding ***" << endl ;
 	cout << "0. Quit             " << endl ;
@@ -155,30 +166,42 @@ bool Menu (int command) {
 	cout << "Input a command (0, 1, 2) : " ;
 	cin >> command ;
 	Sort *sort ;
-	switch(command){
+	switch(command) {
 		case 0:
-			return false;
-			break;
+			return false ;
+			break ;
 		case 1:
-			cout << "Enter the Infix: ";
-			for(int i = 0;i<2;i++){
-				getline( cin, input );
+			cout << "Enter the Infix: " ;
+			for( int i = 0; i<2 ; i++ ) {
+				getline( cin, input ) ;
 			}
 			
-			sort = new Sort(input);
+			sort = new Sort(input) ;
 			cout << "Input: " << input << endl ;
 			
-			if(sort->Check_Is_Infix())
+			if ( sort->Check_Is_Infix() )
 				cout << "It is a legitimate infix expression.\n" ;
-			return true;
-			break;
+			
+			return true ;
+			break ;
 		case 2:
-			return true;
-			break;
+			cout << "Enter the Infix: " ;
+			for( int i = 0; i<2 ; i++ ) {
+				getline( cin, input ) ;
+			}
+			
+			sort = new Sort(input) ;
+			cout << "Input: " << input << endl ;
+			
+			if ( sort->Check_Is_Infix() )
+				cout << "AAAAAAAAA\n" ;
+				
+			return true ;
+			break ;
 		default:
 			cout << "Error : Not correct instruction, Please Enter new one.\n" ;
-			return true;
-			break;
+			return true ;
+			break ;
 	}
 }
 
