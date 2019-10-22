@@ -62,8 +62,10 @@ bool Sort::Check_Is_Infix() {
   else if ( character[i].type == BRACKETS2 && i > x )
    CheckBrackets-- ;
  }
- 
- if ( CheckBrackets != 0 ) {
+	
+ CheckBrackets++;
+	
+ if ( CheckBrackets != 0 && CheckBrackets != 1 ) {
   cout << "Error 2: "<<"there is one extra close parenthesis.\n";
   return false;
  }
